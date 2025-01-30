@@ -7,6 +7,7 @@ import { getComponentValue } from "@latticexyz/recs";
 import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
 import { singletonEntity } from "@latticexyz/store-sync/recs";
+import { formatEther, parseEther } from "viem";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -30,22 +31,30 @@ export function createSystemCalls(
    *   syncToRecs
    *   (https://github.com/latticexyz/mud/blob/main/templates/react/packages/client/src/mud/setupNetwork.ts#L77-L83).
    */
-  { worldContract, waitForTransaction, playerEntity }: SetupNetworkResult,
+  { worldContract, waitForTransaction, playerEntity, walletClient }: SetupNetworkResult,
   { Player }: ClientComponents,
 ) {
   const createCharacter = async (name: string) => {
-    /*
-     * Because IncrementSystem
-     * (https://mud.dev/templates/typescript/contracts#incrementsystemsol)
-     * is in the root namespace, `.increment` can be called directly
-     * on the World contract.
-     */
     const tx = await worldContract.write.app__createPlayer([name as string]);
     await waitForTransaction(tx);
     return getComponentValue(Player, playerEntity);
   };
 
+  const mintDevGold = async () => {
+    console.log(worldContract.write);
+    
+    const tx = await worldContract.write.goldToken__mintGold([walletClient.account.address, parseEther("1")]);
+    await waitForTransaction(tx);
+  };
+
+  const mintDevSilver = async () => {
+    const tx = await worldContract.write.goldToken__mintSilver([walletClient.account.address, parseEther("1")]);
+    await waitForTransaction(tx);
+  };
+
   return {
     createCharacter,
+    mintDevGold,
+    mintDevSilver,
   };
 }

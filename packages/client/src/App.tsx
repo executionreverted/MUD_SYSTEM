@@ -3,13 +3,16 @@ import { useMUD } from "./MUDContext";
 import { singletonEntity } from "@latticexyz/store-sync/recs";
 import { useState } from "react";
 import MyCharacter from "./components/MyCharacter";
+import useGoldBalance from "./hooks/useGoldBalance";
 
 export const App = () => {
   const {
     components: {  },
-    systemCalls: { createCharacter },
+    systemCalls: { createCharacter, mintDevGold, mintDevSilver },
   } = useMUD();
   const [name, setName] = useState("");
+
+  const goldBalance = useGoldBalance();
 
   return (
     <>
@@ -24,6 +27,26 @@ export const App = () => {
           }}
         >
           Create Character
+        </button>
+
+        <button
+          type="button"
+          onClick={async (event) => {
+            event.preventDefault();
+            console.log("mint gold:", await mintDevGold());
+          }}
+        >
+          Mint Gold
+        </button>
+
+        <button
+          type="button"
+          onClick={async (event) => {
+            event.preventDefault();
+            console.log("mint silver:", await mintDevSilver());
+          }}
+        >
+          Mint Silver
         </button>
       </div>
 

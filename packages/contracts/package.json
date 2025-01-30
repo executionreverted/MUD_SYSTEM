@@ -19,7 +19,9 @@
     "@latticexyz/cli": "2.2.16",
     "@latticexyz/schema-type": "2.2.16",
     "@latticexyz/store": "2.2.16",
+    "@latticexyz/store-consumer": "^2.2.16",
     "@latticexyz/world": "2.2.16",
+    "@latticexyz/world-module-erc20": "^2.2.16",
     "@latticexyz/world-modules": "2.2.16",
     "solady": "^0.1.1"
   },

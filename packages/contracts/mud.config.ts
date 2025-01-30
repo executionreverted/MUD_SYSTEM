@@ -1,10 +1,24 @@
 import { defineWorld } from "@latticexyz/world";
+import { defineERC20Module } from "@latticexyz/world-module-erc20/internal";
 
 export default defineWorld({
   deploy: {
     upgradeableWorldImplementation: true,
   },
+  
   namespace: "app",
+  modules: [
+    defineERC20Module({
+      namespace: "goldToken",
+      name: "GOLD",
+      symbol: "GLD",
+    }),
+    defineERC20Module({
+      namespace: "silverToken",
+      name: "Silver",
+      symbol: "SLV",
+    }),
+  ],
   enums: {
     PlayerState: ["IDLE", "IN_COMBAT", "INJURED", "DEAD"],
   },
@@ -12,6 +26,11 @@ export default defineWorld({
     ConfigSystem: {
 
     },
+    TokenMinterSystem: {
+      deploy: {
+        disabled: true
+      }
+    }
   },
   tables: {
     // Add additional config to the schema below
