@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "mud build",
-    "clean": "forge clean && shx rm -rf src/**/codegen",
+    "clean": "forge clean && shx rm -rf src/**/codegen && shx rm -rf cache && shx rm -rf broadcast && shx rm -rf .mud &&  shx rm -rf deploys",
     "deploy:garnet": "mud deploy --profile=garnet",
     "deploy:local": "mud deploy",
     "deploy:redstone": "mud deploy --profile=redstone",

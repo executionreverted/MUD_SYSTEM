@@ -2,6 +2,7 @@
   "name": "mud-template-react-ecs",
   "private": true,
   "scripts": {
+    "clean": "cd packages/contracts/ && pnpm clean && cd ../../",
     "build": "pnpm recursive run build",
     "dev": "mprocs",
     "dev:client": "pnpm --filter 'client' run dev",

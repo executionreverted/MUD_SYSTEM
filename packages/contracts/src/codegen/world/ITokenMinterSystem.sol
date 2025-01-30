@@ -11,5 +11,13 @@ pragma solidity >=0.8.24;
 interface ITokenMinterSystem {
   function app__mintGold(address to, uint256 amount) external;
 
+  function app__getGoldAddress() external view returns (address);
+
+  function app__getSilverAddress() external view returns (address);
+
+  function app___getSilverAddress() external view returns (address);
+
   function app__mintSilver(address to, uint256 amount) external;
+
+  function app__mintAll(address to, uint256 amount) external;
 }

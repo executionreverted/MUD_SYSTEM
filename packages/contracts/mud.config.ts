@@ -5,16 +5,16 @@ export default defineWorld({
   deploy: {
     upgradeableWorldImplementation: true,
   },
-  
+
   namespace: "app",
   modules: [
     defineERC20Module({
-      namespace: "goldToken",
+      namespace: "gold",
       name: "GOLD",
       symbol: "GLD",
     }),
     defineERC20Module({
-      namespace: "silverToken",
+      namespace: "silver",
       name: "Silver",
       symbol: "SLV",
     }),
@@ -27,9 +27,7 @@ export default defineWorld({
 
     },
     TokenMinterSystem: {
-      deploy: {
-        disabled: true
-      }
+      name: "TokenMinter",
     }
   },
   tables: {

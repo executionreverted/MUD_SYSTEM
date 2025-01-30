@@ -41,14 +41,14 @@ export function createSystemCalls(
   };
 
   const mintDevGold = async () => {
-    console.log(worldContract.write);
+    console.log(worldContract);
     
-    const tx = await worldContract.write.goldToken__mintGold([walletClient.account.address, parseEther("1")]);
+    const tx = await worldContract.write.app__mintGold([walletClient.account.address, parseEther("1")]);
     await waitForTransaction(tx);
   };
 
   const mintDevSilver = async () => {
-    const tx = await worldContract.write.goldToken__mintSilver([walletClient.account.address, parseEther("1")]);
+    const tx = await worldContract.write.app__mintSilver([walletClient.account.address, parseEther("1")]);
     await waitForTransaction(tx);
   };
 
