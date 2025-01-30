@@ -12,7 +12,7 @@ import { LastAction } from "./tables/LastAction.sol";
 import { Item, ItemData } from "./tables/Item.sol";
 import { Equipment, EquipmentData } from "./tables/Equipment.sol";
 import { Consumable, ConsumableData } from "./tables/Consumable.sol";
-import { Enemy, EnemyData } from "./tables/Enemy.sol";
+import { Enemy } from "./tables/Enemy.sol";
 import { LootTable, LootTableData } from "./tables/LootTable.sol";
 import { ShopPrice, ShopPriceData } from "./tables/ShopPrice.sol";
 import { Shop, ShopData } from "./tables/Shop.sol";

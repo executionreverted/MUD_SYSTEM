@@ -56,3 +56,12 @@ enum CurrencyType {
   SILVER,
   THIRD_PARTY
 }
+
+enum Rarity {
+  COMMON,
+  UNCOMMON,
+  RARE,
+  EPIC,
+  LEGENDARY,
+  MYTHIC
+}

@@ -54,6 +54,7 @@ export default defineWorld({
     EquipmentSlot: ["HEAD", "CHEST", "LEGS", "FEET", "HANDS", "NECK", "RING1", "RING2", "WEAPON", "SHIELD", "OFFHAND"],
     TargetType: ["SELF", "PLAYER", "ENEMY", "ALLY", "ALL"],
     CurrencyType: ["GOLD", "SILVER", "THIRD_PARTY"],
+    Rarity: ["COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "MYTHIC"],
   },
   systems: {
     ConfigSystem: {
@@ -128,9 +129,9 @@ export default defineWorld({
     Item: {
       schema: {
         id: "uint256",
-        rarity: "uint256",
         level: "uint256",
         salePrice: "uint256",
+        rarity: "Rarity",
       },
       key: ["id"],
     },

@@ -6,14 +6,18 @@ import { Item, ItemData } from "../codegen/Tables/Item.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { Config } from "../codegen/index.sol";
 import { OnlyAdmin } from "../lib/Common.sol";
+import { Rarity } from "../codegen/common.sol";
+import { console } from "forge-std/console.sol";
 
 contract ItemSystem is System {
   modifier onlyAdmin() {
-    if (_msgSender() != Config.getAdminAddress()) revert OnlyAdmin();
+    console.log("tx.origin", tx.origin);
+    console.log("Config.getAdminAddress()", Config.getAdminAddress());
+    if (tx.origin != Config.getAdminAddress()) revert OnlyAdmin();
     _;
   }
 
-  function createItem(uint256 id, uint256 rarity, uint256 level, uint256 salePrice) external onlyAdmin {
+  function createItem(uint256 id, Rarity rarity, uint256 level, uint256 salePrice) external onlyAdmin {
     Item.set(id, ItemData({ rarity: rarity, level: level, salePrice: salePrice }));
   }
 

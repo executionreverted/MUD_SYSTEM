@@ -13,6 +13,9 @@ import { WorldRegistrationSystem } from "@latticexyz/world/src/modules/init/impl
 import { TokenMinterSystem } from "../src/systems/TokenMinterSystem.sol";
 import { RESOURCE_SYSTEM } from "@latticexyz/world/src/worldResourceTypes.sol";
 import { Systems } from "@latticexyz/world/src/codegen/tables/Systems.sol";
+import { ItemList } from "./ItemList.sol";
+import { Item, ItemData } from "../src/codegen/Tables/Item.sol";
+
 contract PostDeploy is Script {
   function run(address worldAddress) external {
     // Specify a store so that you can use tables directly in PostDeploy
@@ -23,23 +26,27 @@ contract PostDeploy is Script {
     address deployerAddress = vm.envAddress("DEPLOYER_ADDRESS");
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
-    console.log("Deployer address:", tx.origin);
-    IWorld(worldAddress).app__setAdminAddress(tx.origin);
+    console.log("Deployer address:", deployerAddress);
+    IWorld(worldAddress).app__setAdminAddress(deployerAddress);
 
     ResourceId systemResource = WorldResourceIdLib.encode(RESOURCE_SYSTEM, "app", "TokenMinter");
     (address mySys, ) = Systems.get(systemResource);
     console.log("Deployed Minter System address");
     console.log(mySys);
-    
+
     ResourceId namespaceResource = WorldResourceIdLib.encodeNamespace(bytes14("gold"));
     IWorld(worldAddress).grantAccess(namespaceResource, mySys);
- 
+
     ResourceId namespaceResource2 = WorldResourceIdLib.encodeNamespace(bytes14("silver"));
     IWorld(worldAddress).grantAccess(namespaceResource2, mySys);
 
     ResourceId namespaceResource3 = WorldResourceIdLib.encodeNamespace(bytes14("items"));
     IWorld(worldAddress).grantAccess(namespaceResource3, mySys);
-   
+
+    ItemData[] memory items = ItemList.getItems();
+    for (uint256 i = 0; i < items.length; i++) {
+      IWorld(worldAddress).app__createItem(i, items[i].rarity, items[i].level, items[i].salePrice);
+    }
     vm.stopBroadcast();
   }
 }

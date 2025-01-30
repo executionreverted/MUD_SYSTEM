@@ -16,10 +16,13 @@ import { Schema } from "@latticexyz/store/src/Schema.sol";
 import { EncodedLengths, EncodedLengthsLib } from "@latticexyz/store/src/EncodedLengths.sol";
 import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 
+// Import user types
+import { Rarity } from "../common.sol";
+
 struct ItemData {
-  uint256 rarity;
   uint256 level;
   uint256 salePrice;
+  Rarity rarity;
 }
 
 library Item {
@@ -27,12 +30,12 @@ library Item {
   ResourceId constant _tableId = ResourceId.wrap(0x746261707000000000000000000000004974656d000000000000000000000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x0060030020202000000000000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x0041030020200100000000000000000000000000000000000000000000000000);
 
   // Hex-encoded key schema of (uint256)
   Schema constant _keySchema = Schema.wrap(0x002001001f000000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (uint256, uint256, uint256)
-  Schema constant _valueSchema = Schema.wrap(0x006003001f1f1f00000000000000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (uint256, uint256, uint8)
+  Schema constant _valueSchema = Schema.wrap(0x004103001f1f0000000000000000000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -49,9 +52,9 @@ library Item {
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
     fieldNames = new string[](3);
-    fieldNames[0] = "rarity";
-    fieldNames[1] = "level";
-    fieldNames[2] = "salePrice";
+    fieldNames[0] = "level";
+    fieldNames[1] = "salePrice";
+    fieldNames[2] = "rarity";
   }
 
   /**
@@ -69,55 +72,13 @@ library Item {
   }
 
   /**
-   * @notice Get rarity.
-   */
-  function getRarity(uint256 id) internal view returns (uint256 rarity) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(id));
-
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return (uint256(bytes32(_blob)));
-  }
-
-  /**
-   * @notice Get rarity.
-   */
-  function _getRarity(uint256 id) internal view returns (uint256 rarity) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(id));
-
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return (uint256(bytes32(_blob)));
-  }
-
-  /**
-   * @notice Set rarity.
-   */
-  function setRarity(uint256 id, uint256 rarity) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(id));
-
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((rarity)), _fieldLayout);
-  }
-
-  /**
-   * @notice Set rarity.
-   */
-  function _setRarity(uint256 id, uint256 rarity) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(id));
-
-    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((rarity)), _fieldLayout);
-  }
-
-  /**
    * @notice Get level.
    */
   function getLevel(uint256 id) internal view returns (uint256 level) {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -128,7 +89,7 @@ library Item {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -139,7 +100,7 @@ library Item {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((level)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((level)), _fieldLayout);
   }
 
   /**
@@ -149,7 +110,7 @@ library Item {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((level)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((level)), _fieldLayout);
   }
 
   /**
@@ -159,7 +120,7 @@ library Item {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -170,7 +131,7 @@ library Item {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -181,7 +142,7 @@ library Item {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((salePrice)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((salePrice)), _fieldLayout);
   }
 
   /**
@@ -191,7 +152,49 @@ library Item {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((salePrice)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((salePrice)), _fieldLayout);
+  }
+
+  /**
+   * @notice Get rarity.
+   */
+  function getRarity(uint256 id) internal view returns (Rarity rarity) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = bytes32(uint256(id));
+
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    return Rarity(uint8(bytes1(_blob)));
+  }
+
+  /**
+   * @notice Get rarity.
+   */
+  function _getRarity(uint256 id) internal view returns (Rarity rarity) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = bytes32(uint256(id));
+
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    return Rarity(uint8(bytes1(_blob)));
+  }
+
+  /**
+   * @notice Set rarity.
+   */
+  function setRarity(uint256 id, Rarity rarity) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = bytes32(uint256(id));
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked(uint8(rarity)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set rarity.
+   */
+  function _setRarity(uint256 id, Rarity rarity) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = bytes32(uint256(id));
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked(uint8(rarity)), _fieldLayout);
   }
 
   /**
@@ -227,8 +230,8 @@ library Item {
   /**
    * @notice Set the full data using individual values.
    */
-  function set(uint256 id, uint256 rarity, uint256 level, uint256 salePrice) internal {
-    bytes memory _staticData = encodeStatic(rarity, level, salePrice);
+  function set(uint256 id, uint256 level, uint256 salePrice, Rarity rarity) internal {
+    bytes memory _staticData = encodeStatic(level, salePrice, rarity);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -242,8 +245,8 @@ library Item {
   /**
    * @notice Set the full data using individual values.
    */
-  function _set(uint256 id, uint256 rarity, uint256 level, uint256 salePrice) internal {
-    bytes memory _staticData = encodeStatic(rarity, level, salePrice);
+  function _set(uint256 id, uint256 level, uint256 salePrice, Rarity rarity) internal {
+    bytes memory _staticData = encodeStatic(level, salePrice, rarity);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -258,7 +261,7 @@ library Item {
    * @notice Set the full data using the data struct.
    */
   function set(uint256 id, ItemData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.rarity, _table.level, _table.salePrice);
+    bytes memory _staticData = encodeStatic(_table.level, _table.salePrice, _table.rarity);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -273,7 +276,7 @@ library Item {
    * @notice Set the full data using the data struct.
    */
   function _set(uint256 id, ItemData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.rarity, _table.level, _table.salePrice);
+    bytes memory _staticData = encodeStatic(_table.level, _table.salePrice, _table.rarity);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -287,12 +290,12 @@ library Item {
   /**
    * @notice Decode the tightly packed blob of static data using this table's field layout.
    */
-  function decodeStatic(bytes memory _blob) internal pure returns (uint256 rarity, uint256 level, uint256 salePrice) {
-    rarity = (uint256(Bytes.getBytes32(_blob, 0)));
+  function decodeStatic(bytes memory _blob) internal pure returns (uint256 level, uint256 salePrice, Rarity rarity) {
+    level = (uint256(Bytes.getBytes32(_blob, 0)));
 
-    level = (uint256(Bytes.getBytes32(_blob, 32)));
+    salePrice = (uint256(Bytes.getBytes32(_blob, 32)));
 
-    salePrice = (uint256(Bytes.getBytes32(_blob, 64)));
+    rarity = Rarity(uint8(Bytes.getBytes1(_blob, 64)));
   }
 
   /**
@@ -306,7 +309,7 @@ library Item {
     EncodedLengths,
     bytes memory
   ) internal pure returns (ItemData memory _table) {
-    (_table.rarity, _table.level, _table.salePrice) = decodeStatic(_staticData);
+    (_table.level, _table.salePrice, _table.rarity) = decodeStatic(_staticData);
   }
 
   /**
@@ -333,8 +336,8 @@ library Item {
    * @notice Tightly pack static (fixed length) data using this table's schema.
    * @return The static data, encoded into a sequence of bytes.
    */
-  function encodeStatic(uint256 rarity, uint256 level, uint256 salePrice) internal pure returns (bytes memory) {
-    return abi.encodePacked(rarity, level, salePrice);
+  function encodeStatic(uint256 level, uint256 salePrice, Rarity rarity) internal pure returns (bytes memory) {
+    return abi.encodePacked(level, salePrice, rarity);
   }
 
   /**
@@ -344,11 +347,11 @@ library Item {
    * @return The dynamic (variable length) data, encoded into a sequence of bytes.
    */
   function encode(
-    uint256 rarity,
     uint256 level,
-    uint256 salePrice
+    uint256 salePrice,
+    Rarity rarity
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
-    bytes memory _staticData = encodeStatic(rarity, level, salePrice);
+    bytes memory _staticData = encodeStatic(level, salePrice, rarity);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
