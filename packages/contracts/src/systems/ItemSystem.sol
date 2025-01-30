@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import { Item, ItemData } from "../codegen/Tables/Item.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { Config } from "../codegen/index.sol";
-import { OnlyAdmin } from "../lib/Common.sol";
+import { OnlyAdmin } from "../lib/CommonUtils.sol";
 import { Rarity } from "../codegen/common.sol";
 import { console } from "forge-std/console.sol";
 

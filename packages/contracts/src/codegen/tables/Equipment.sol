@@ -16,11 +16,14 @@ import { Schema } from "@latticexyz/store/src/Schema.sol";
 import { EncodedLengths, EncodedLengthsLib } from "@latticexyz/store/src/EncodedLengths.sol";
 import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 
+// Import user types
+import { EquipmentSlot } from "../common.sol";
+
 struct EquipmentData {
   uint256 itemId;
-  uint256 slot;
   uint256 durability;
   uint256 maxDurability;
+  EquipmentSlot slot;
 }
 
 library Equipment {
@@ -28,12 +31,12 @@ library Equipment {
   ResourceId constant _tableId = ResourceId.wrap(0x7462617070000000000000000000000045717569706d656e7400000000000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x0080040020202020000000000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x0061040020202001000000000000000000000000000000000000000000000000);
 
   // Hex-encoded key schema of (uint256)
   Schema constant _keySchema = Schema.wrap(0x002001001f000000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (uint256, uint256, uint256, uint256)
-  Schema constant _valueSchema = Schema.wrap(0x008004001f1f1f1f000000000000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (uint256, uint256, uint256, uint8)
+  Schema constant _valueSchema = Schema.wrap(0x006104001f1f1f00000000000000000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -51,9 +54,9 @@ library Equipment {
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
     fieldNames = new string[](4);
     fieldNames[0] = "itemId";
-    fieldNames[1] = "slot";
-    fieldNames[2] = "durability";
-    fieldNames[3] = "maxDurability";
+    fieldNames[1] = "durability";
+    fieldNames[2] = "maxDurability";
+    fieldNames[3] = "slot";
   }
 
   /**
@@ -113,55 +116,13 @@ library Equipment {
   }
 
   /**
-   * @notice Get slot.
-   */
-  function getSlot(uint256 id) internal view returns (uint256 slot) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(id));
-
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
-    return (uint256(bytes32(_blob)));
-  }
-
-  /**
-   * @notice Get slot.
-   */
-  function _getSlot(uint256 id) internal view returns (uint256 slot) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(id));
-
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
-    return (uint256(bytes32(_blob)));
-  }
-
-  /**
-   * @notice Set slot.
-   */
-  function setSlot(uint256 id, uint256 slot) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(id));
-
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((slot)), _fieldLayout);
-  }
-
-  /**
-   * @notice Set slot.
-   */
-  function _setSlot(uint256 id, uint256 slot) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256(id));
-
-    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((slot)), _fieldLayout);
-  }
-
-  /**
    * @notice Get durability.
    */
   function getDurability(uint256 id) internal view returns (uint256 durability) {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -172,7 +133,7 @@ library Equipment {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -183,7 +144,7 @@ library Equipment {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((durability)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((durability)), _fieldLayout);
   }
 
   /**
@@ -193,7 +154,7 @@ library Equipment {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((durability)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((durability)), _fieldLayout);
   }
 
   /**
@@ -203,7 +164,7 @@ library Equipment {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -214,7 +175,7 @@ library Equipment {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
     return (uint256(bytes32(_blob)));
   }
 
@@ -225,7 +186,7 @@ library Equipment {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((maxDurability)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((maxDurability)), _fieldLayout);
   }
 
   /**
@@ -235,7 +196,49 @@ library Equipment {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = bytes32(uint256(id));
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((maxDurability)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((maxDurability)), _fieldLayout);
+  }
+
+  /**
+   * @notice Get slot.
+   */
+  function getSlot(uint256 id) internal view returns (EquipmentSlot slot) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = bytes32(uint256(id));
+
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    return EquipmentSlot(uint8(bytes1(_blob)));
+  }
+
+  /**
+   * @notice Get slot.
+   */
+  function _getSlot(uint256 id) internal view returns (EquipmentSlot slot) {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = bytes32(uint256(id));
+
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    return EquipmentSlot(uint8(bytes1(_blob)));
+  }
+
+  /**
+   * @notice Set slot.
+   */
+  function setSlot(uint256 id, EquipmentSlot slot) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = bytes32(uint256(id));
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked(uint8(slot)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set slot.
+   */
+  function _setSlot(uint256 id, EquipmentSlot slot) internal {
+    bytes32[] memory _keyTuple = new bytes32[](1);
+    _keyTuple[0] = bytes32(uint256(id));
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked(uint8(slot)), _fieldLayout);
   }
 
   /**
@@ -271,8 +274,8 @@ library Equipment {
   /**
    * @notice Set the full data using individual values.
    */
-  function set(uint256 id, uint256 itemId, uint256 slot, uint256 durability, uint256 maxDurability) internal {
-    bytes memory _staticData = encodeStatic(itemId, slot, durability, maxDurability);
+  function set(uint256 id, uint256 itemId, uint256 durability, uint256 maxDurability, EquipmentSlot slot) internal {
+    bytes memory _staticData = encodeStatic(itemId, durability, maxDurability, slot);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -286,8 +289,8 @@ library Equipment {
   /**
    * @notice Set the full data using individual values.
    */
-  function _set(uint256 id, uint256 itemId, uint256 slot, uint256 durability, uint256 maxDurability) internal {
-    bytes memory _staticData = encodeStatic(itemId, slot, durability, maxDurability);
+  function _set(uint256 id, uint256 itemId, uint256 durability, uint256 maxDurability, EquipmentSlot slot) internal {
+    bytes memory _staticData = encodeStatic(itemId, durability, maxDurability, slot);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -302,7 +305,7 @@ library Equipment {
    * @notice Set the full data using the data struct.
    */
   function set(uint256 id, EquipmentData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.itemId, _table.slot, _table.durability, _table.maxDurability);
+    bytes memory _staticData = encodeStatic(_table.itemId, _table.durability, _table.maxDurability, _table.slot);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -317,7 +320,7 @@ library Equipment {
    * @notice Set the full data using the data struct.
    */
   function _set(uint256 id, EquipmentData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.itemId, _table.slot, _table.durability, _table.maxDurability);
+    bytes memory _staticData = encodeStatic(_table.itemId, _table.durability, _table.maxDurability, _table.slot);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -333,14 +336,14 @@ library Equipment {
    */
   function decodeStatic(
     bytes memory _blob
-  ) internal pure returns (uint256 itemId, uint256 slot, uint256 durability, uint256 maxDurability) {
+  ) internal pure returns (uint256 itemId, uint256 durability, uint256 maxDurability, EquipmentSlot slot) {
     itemId = (uint256(Bytes.getBytes32(_blob, 0)));
 
-    slot = (uint256(Bytes.getBytes32(_blob, 32)));
+    durability = (uint256(Bytes.getBytes32(_blob, 32)));
 
-    durability = (uint256(Bytes.getBytes32(_blob, 64)));
+    maxDurability = (uint256(Bytes.getBytes32(_blob, 64)));
 
-    maxDurability = (uint256(Bytes.getBytes32(_blob, 96)));
+    slot = EquipmentSlot(uint8(Bytes.getBytes1(_blob, 96)));
   }
 
   /**
@@ -354,7 +357,7 @@ library Equipment {
     EncodedLengths,
     bytes memory
   ) internal pure returns (EquipmentData memory _table) {
-    (_table.itemId, _table.slot, _table.durability, _table.maxDurability) = decodeStatic(_staticData);
+    (_table.itemId, _table.durability, _table.maxDurability, _table.slot) = decodeStatic(_staticData);
   }
 
   /**
@@ -383,11 +386,11 @@ library Equipment {
    */
   function encodeStatic(
     uint256 itemId,
-    uint256 slot,
     uint256 durability,
-    uint256 maxDurability
+    uint256 maxDurability,
+    EquipmentSlot slot
   ) internal pure returns (bytes memory) {
-    return abi.encodePacked(itemId, slot, durability, maxDurability);
+    return abi.encodePacked(itemId, durability, maxDurability, slot);
   }
 
   /**
@@ -398,11 +401,11 @@ library Equipment {
    */
   function encode(
     uint256 itemId,
-    uint256 slot,
     uint256 durability,
-    uint256 maxDurability
+    uint256 maxDurability,
+    EquipmentSlot slot
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
-    bytes memory _staticData = encodeStatic(itemId, slot, durability, maxDurability);
+    bytes memory _staticData = encodeStatic(itemId, durability, maxDurability, slot);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;

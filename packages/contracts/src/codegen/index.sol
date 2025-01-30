@@ -16,3 +16,4 @@ import { Enemy } from "./tables/Enemy.sol";
 import { LootTable, LootTableData } from "./tables/LootTable.sol";
 import { ShopPrice, ShopPriceData } from "./tables/ShopPrice.sol";
 import { Shop, ShopData } from "./tables/Shop.sol";
+import { Job, JobData } from "./tables/Job.sol";

@@ -17,6 +17,9 @@ import { ItemList } from "./ItemList.sol";
 import { Item, ItemData } from "../src/codegen/Tables/Item.sol";
 import { ConsumableList } from "./ConsumableList.sol";
 import { ConsumableData } from "../src/codegen/Tables/Consumable.sol";
+import { EquipmentList } from "./EquipmentList.sol";
+import { EquipmentData } from "../src/codegen/Tables/Equipment.sol";
+
 contract PostDeploy is Script {
   function run(address worldAddress) external {
     // Specify a store so that you can use tables directly in PostDeploy
@@ -44,6 +47,7 @@ contract PostDeploy is Script {
     ResourceId namespaceResource3 = WorldResourceIdLib.encodeNamespace(bytes14("items"));
     IWorld(worldAddress).grantAccess(namespaceResource3, mySys);
 
+    // INITIALIZE DATABASE GAME OBJECTS
     ItemData[] memory items = ItemList.getItems();
     for (uint256 i = 0; i < items.length; i++) {
       IWorld(worldAddress).app__createItem(i, items[i].rarity, items[i].level, items[i].salePrice);
@@ -61,7 +65,16 @@ contract PostDeploy is Script {
         consumables[i].targetType
       );
     }
+    EquipmentData[] memory equipment = EquipmentList.getEquipment();
+    for (uint256 i = 0; i < equipment.length; i++) {
+      IWorld(worldAddress).app__createEquipment(
+        i,
+        equipment[i].slot,
+        equipment[i].itemId,
+        equipment[i].durability,
+        equipment[i].maxDurability
+      );
+    }
     vm.stopBroadcast();
   }
 }
-

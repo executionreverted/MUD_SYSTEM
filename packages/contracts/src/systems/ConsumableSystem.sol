@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
 import { Config } from "../codegen/index.sol";
-import { OnlyAdmin } from "../lib/Common.sol";
+import { OnlyAdmin } from "../lib/CommonUtils.sol";
 import { EffectType, DurationType, TargetType } from "../codegen/common.sol";
 import { Consumable, ConsumableData } from "../codegen/tables/Consumable.sol";
 contract ConsumableSystem is System {
