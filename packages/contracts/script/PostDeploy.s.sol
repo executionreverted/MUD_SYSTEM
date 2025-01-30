@@ -15,7 +15,8 @@ import { RESOURCE_SYSTEM } from "@latticexyz/world/src/worldResourceTypes.sol";
 import { Systems } from "@latticexyz/world/src/codegen/tables/Systems.sol";
 import { ItemList } from "./ItemList.sol";
 import { Item, ItemData } from "../src/codegen/Tables/Item.sol";
-
+import { ConsumableList } from "./ConsumableList.sol";
+import { ConsumableData } from "../src/codegen/Tables/Consumable.sol";
 contract PostDeploy is Script {
   function run(address worldAddress) external {
     // Specify a store so that you can use tables directly in PostDeploy
@@ -47,6 +48,20 @@ contract PostDeploy is Script {
     for (uint256 i = 0; i < items.length; i++) {
       IWorld(worldAddress).app__createItem(i, items[i].rarity, items[i].level, items[i].salePrice);
     }
+    ConsumableData[] memory consumables = ConsumableList.getConsumables();
+    for (uint256 i = 0; i < consumables.length; i++) {
+      IWorld(worldAddress).app__createConsumable(
+        i,
+        consumables[i].itemId,
+        consumables[i].charges,
+        consumables[i].maxCharges,
+        consumables[i].duration,
+        consumables[i].effect,
+        consumables[i].durationType,
+        consumables[i].targetType
+      );
+    }
     vm.stopBroadcast();
   }
 }
+

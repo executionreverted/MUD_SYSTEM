@@ -8,7 +8,8 @@ library ItemList {
   function getItems() internal pure returns (ItemData[] memory) {
     ItemData[] memory items = new ItemData[](10);
 
-    // Common
+    // Common Sword Base Item Objects
+
     items[0] = ItemData({ rarity: Rarity.COMMON, level: 1, salePrice: 1e18 });
     items[1] = ItemData({ rarity: Rarity.COMMON, level: 5, salePrice: 5e18 });
     items[2] = ItemData({ rarity: Rarity.COMMON, level: 10, salePrice: 10e18 });
