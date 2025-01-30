@@ -7,5 +7,52 @@ enum PlayerState {
   IDLE,
   IN_COMBAT,
   INJURED,
-  DEAD
+  DEAD,
+  RESTING,
+  TRAVELLING,
+  FISHING
+}
+
+enum DurationType {
+  SECONDS,
+  MINUTES,
+  HOURS,
+  DAYS
+}
+
+enum EffectType {
+  HEALING,
+  DAMAGE,
+  BUFF,
+  DEBUFF,
+  AOE_HEALING,
+  AOE_DAMAGE
+}
+
+enum EquipmentSlot {
+  HEAD,
+  CHEST,
+  LEGS,
+  FEET,
+  HANDS,
+  NECK,
+  RING1,
+  RING2,
+  WEAPON,
+  SHIELD,
+  OFFHAND
+}
+
+enum TargetType {
+  SELF,
+  PLAYER,
+  ENEMY,
+  ALLY,
+  ALL
+}
+
+enum CurrencyType {
+  GOLD,
+  SILVER,
+  THIRD_PARTY
 }
