@@ -37,7 +37,9 @@ contract PostDeploy is Script {
     ResourceId namespaceResource2 = WorldResourceIdLib.encodeNamespace(bytes14("silver"));
     IWorld(worldAddress).grantAccess(namespaceResource2, mySys);
 
+    ResourceId namespaceResource3 = WorldResourceIdLib.encodeNamespace(bytes14("items"));
+    IWorld(worldAddress).grantAccess(namespaceResource3, mySys);
+   
     vm.stopBroadcast();
-
   }
 }

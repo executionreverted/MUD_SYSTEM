@@ -1,5 +1,18 @@
 import { defineWorld } from "@latticexyz/world";
 import { defineERC20Module } from "@latticexyz/world-module-erc20/internal";
+import { encodeAbiParameters, stringToHex } from "../client/node_modules/viem";
+ 
+
+const erc721ModuleArgs = encodeAbiParameters(
+  [
+    { type: "bytes14" },
+    {
+      type: "tuple",
+      components: [{ type: "string" }, { type: "string" }, { type: "string" }],
+    },
+  ],
+  [stringToHex("items", { size: 14 }), ["In Game Items", "ITEM", "http://www.example.com/base/uri/goes/here"]],
+);
 
 export default defineWorld({
   deploy: {
@@ -18,6 +31,21 @@ export default defineWorld({
       name: "Silver",
       symbol: "SLV",
     }),
+    {
+      artifactPath: "./out/ERC721PuppetModule.sol/ERC721PuppetModule.json",
+      root: false,
+      args: [],
+    },
+    {
+      artifactPath: "./out/InGameERC721Module.sol/InGameERC721Module.json",
+      root: false,
+      args: [
+        {
+          type: "bytes",
+          value: erc721ModuleArgs,
+        },
+      ],
+    },
   ],
   enums: {
     PlayerState: ["IDLE", "IN_COMBAT", "INJURED", "DEAD"],

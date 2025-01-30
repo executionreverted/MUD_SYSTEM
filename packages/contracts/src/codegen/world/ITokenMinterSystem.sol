@@ -19,5 +19,9 @@ interface ITokenMinterSystem {
 
   function app__mintSilver(address to, uint256 amount) external;
 
+  function app__mintItem(address to, uint256 id) external;
+
+  function app__getItemsAddress() external view returns (address);
+
   function app__mintAll(address to, uint256 amount) external;
 }
