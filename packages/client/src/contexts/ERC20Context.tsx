@@ -18,7 +18,7 @@ interface ERC20ContextType {
 }
 
 const ERC20Context = createContext<ERC20ContextType | undefined>(undefined);
-
+// turn to multicall later
 export function ERC20Provider({ children }: { children: ReactNode }) {
   const {
     network: { walletClient, worldContract, publicClient },
