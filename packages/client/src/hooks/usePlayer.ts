@@ -11,7 +11,6 @@ export const usePlayer = () => {
     const state = useComponentValue(components.State, playerEntity);
     const level = useComponentValue(components.Level, playerEntity);
     const lastAction = useComponentValue(components.LastAction, playerEntity);
-    console.log({player, name, state, level, lastAction});
     const combined = {
         activated: player?.activated,
         name: name?.name,

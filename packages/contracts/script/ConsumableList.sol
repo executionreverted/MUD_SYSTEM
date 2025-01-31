@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import { ConsumableData, Consumable } from "../src/codegen/Tables/Consumable.sol";
+import { ConsumableData, Consumable } from "../src/codegen/tables/Consumable.sol";
 import { Rarity } from "../src/codegen/common.sol";
 import { EffectType, DurationType, TargetType } from "../src/codegen/common.sol";
 library ConsumableList {

@@ -14,11 +14,11 @@ import { TokenMinterSystem } from "../src/systems/TokenMinterSystem.sol";
 import { RESOURCE_SYSTEM } from "@latticexyz/world/src/worldResourceTypes.sol";
 import { Systems } from "@latticexyz/world/src/codegen/tables/Systems.sol";
 import { ItemList } from "./ItemList.sol";
-import { Item, ItemData } from "../src/codegen/Tables/Item.sol";
+import { Item, ItemData } from "../src/codegen/tables/Item.sol";
 import { ConsumableList } from "./ConsumableList.sol";
-import { ConsumableData } from "../src/codegen/Tables/Consumable.sol";
+import { ConsumableData } from "../src/codegen/tables/Consumable.sol";
 import { EquipmentList } from "./EquipmentList.sol";
-import { EquipmentData } from "../src/codegen/Tables/Equipment.sol";
+import { EquipmentData } from "../src/codegen/tables/Equipment.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Equipment, EquipmentData } from "../src/codegen/Tables/Equipment.sol";
+import { Equipment, EquipmentData } from "../src/codegen/tables/Equipment.sol";
 import { EquipmentSlot } from "../src/codegen/common.sol";
 
 library EquipmentList {

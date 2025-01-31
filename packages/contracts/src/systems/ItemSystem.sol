@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import { Item, ItemData } from "../codegen/Tables/Item.sol";
+import { Item, ItemData } from "../codegen/tables/Item.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { Config } from "../codegen/index.sol";
 import { OnlyAdmin } from "../lib/CommonUtils.sol";

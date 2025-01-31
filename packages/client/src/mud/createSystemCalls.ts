@@ -8,6 +8,7 @@ import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
 import { singletonEntity } from "@latticexyz/store-sync/recs";
 import { formatEther, parseEther } from "viem";
+import { sleep } from "@latticexyz/utils";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -40,16 +41,18 @@ export function createSystemCalls(
     return getComponentValue(Player, playerEntity);
   };
 
-  const mintDevGold = async () => {
-    console.log(worldContract);
-    
+  const mintDevGold = async (callback: any) => {
     const tx = await worldContract.write.app__mintGold([walletClient.account.address, parseEther("1")]);
     await waitForTransaction(tx);
+    await sleep(1000);
+    callback();
   };
 
-  const mintDevSilver = async () => {
+  const mintDevSilver = async (callback: any) => {
     const tx = await worldContract.write.app__mintSilver([walletClient.account.address, parseEther("1")]);
     await waitForTransaction(tx);
+    await sleep(1000);
+    callback();
   };
 
   return {

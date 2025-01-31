@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Item, ItemData } from "../src/codegen/Tables/Item.sol";
+import { Item, ItemData } from "../src/codegen/tables/Item.sol";
 import { Rarity } from "../src/codegen/common.sol";
 
 library ItemList {

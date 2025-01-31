@@ -3,20 +3,26 @@ import { useMUD } from "./MUDContext";
 import { singletonEntity } from "@latticexyz/store-sync/recs";
 import { useState } from "react";
 import MyCharacter from "./components/MyCharacter";
-import useGoldBalance from "./hooks/useGoldBalance";
+import { formatEther } from "viem";
+import { useERC20Balance } from "./hooks/useERC20Balance";
 
 export const App = () => {
   const {
-    components: {  },
+    components: { },
     systemCalls: { createCharacter, mintDevGold, mintDevSilver },
   } = useMUD();
   const [name, setName] = useState("");
 
-  const goldBalance = useGoldBalance();
+  const { GoldBalance, refetchGoldBalance } = useERC20Balance("Gold");
+  const { SilverBalance, refetchSilverBalance } = useERC20Balance("Silver");
 
   return (
     <>
       <MyCharacter />
+      <div>
+        <p>Gold Balance: {formatEther(GoldBalance)}</p>
+        <p>Silver Balance: {formatEther(SilverBalance)}</p>
+      </div>
       <div className="flex flex-col gap-2">
         <input type="text" onChange={(e) => setName(e.target.value)} />
         <button
@@ -33,7 +39,7 @@ export const App = () => {
           type="button"
           onClick={async (event) => {
             event.preventDefault();
-            console.log("mint gold:", await mintDevGold());
+            await mintDevGold(() => refetchGoldBalance("Gold"));
           }}
         >
           Mint Gold
@@ -43,7 +49,7 @@ export const App = () => {
           type="button"
           onClick={async (event) => {
             event.preventDefault();
-            console.log("mint silver:", await mintDevSilver());
+            await mintDevSilver(() => refetchSilverBalance("Silver"));
           }}
         >
           Mint Silver
