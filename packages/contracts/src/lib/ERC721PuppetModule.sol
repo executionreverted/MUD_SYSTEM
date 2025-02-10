@@ -48,7 +48,9 @@ contract ERC721PuppetModule is Module {
     if (!success) revertWithBytes(returnData);
   }
 
-  function install(bytes memory) public {
+  function install(bytes memory encodedArgs) public {
+    requireNotInstalled(__self, encodedArgs);
+
     IBaseWorld world = IBaseWorld(_world());
 
     // Register namespace

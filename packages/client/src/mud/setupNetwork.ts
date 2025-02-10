@@ -44,8 +44,9 @@ export async function setupNetwork() {
    */
   const clientOptions = {
     chain: networkConfig.chain,
-    transport: transportObserver(fallback([webSocket(), http()])),
+    transport: transportObserver(fallback([ http()])),
     pollingInterval: 1000,
+    
   } as const satisfies ClientConfig;
 
   const publicClient = createPublicClient(clientOptions);

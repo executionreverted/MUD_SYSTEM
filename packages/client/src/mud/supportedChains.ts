@@ -12,9 +12,9 @@
  */
 
 import { MUDChain, mudFoundry, redstone, garnet } from "@latticexyz/common/chains";
-
+import eclipseTestnet from "../utils/customChain";
 /*
  * See https://mud.dev/guides/hello-world/add-chain-client
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [mudFoundry, redstone, garnet];
+export const supportedChains: MUDChain[] = [mudFoundry, redstone, garnet, eclipseTestnet];

@@ -9,6 +9,7 @@ import { ERC20Registry } from "@latticexyz/world-module-erc20/src/codegen/index.
 import { ERC20WithWorld as ERC20 } from "@latticexyz/world-module-erc20/src/examples/ERC20WithWorld.sol";
 import { ERC721Registry } from "@latticexyz/world-modules/src/modules/erc721-puppet/tables/ERC721Registry.sol";
 import { IERC721Mintable } from "@latticexyz/world-modules/src/modules/erc721-puppet/IERC721Mintable.sol";
+import { LastAction } from "../codegen/tables/LastAction.sol";
 contract TokenMinterSystem is System {
   function mintGold(address to, uint256 amount) external {
     _mintGold(to, amount);
@@ -18,6 +19,7 @@ contract TokenMinterSystem is System {
     address tokenAddress = _getGoldAddress();
     ERC20 erc20 = ERC20(tokenAddress);
     erc20.mint(to, amount);
+    LastAction.set(to, block.timestamp);
   }
 
   function getGoldAddress() external view returns (address) {
@@ -50,6 +52,7 @@ contract TokenMinterSystem is System {
     address tokenAddress = _getSilverAddress();
     ERC20 erc20 = ERC20(tokenAddress);
     erc20.mint(to, amount);
+    LastAction.set(to, block.timestamp);
   }
 
   function mintItem(address to, uint256 id) external {
@@ -60,6 +63,7 @@ contract TokenMinterSystem is System {
     address tokenAddress = _getItemsAddress();
     IERC721Mintable erc721 = IERC721Mintable(tokenAddress);
     erc721.mint(to, id);
+    // LastAction.set(to, block.timestamp);
   }
 
   function getItemsAddress() external view returns (address) {
